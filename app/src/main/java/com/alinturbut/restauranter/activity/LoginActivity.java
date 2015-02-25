@@ -1,21 +1,20 @@
-package com.alinturbut.restauranter;
+package com.alinturbut.restauranter.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,12 +25,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.alinturbut.restauranter.R;
+import com.alinturbut.restauranter.helper.ApiUrls;
+import com.alinturbut.restauranter.helper.RESTCaller;
+import com.alinturbut.restauranter.model.HttpRequestMethod;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
 
 /**
  * A login screen that offers login via email/password.
+ * @author alinturbut.
  */
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
@@ -145,13 +154,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        return true;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() >= 3;
     }
 
     /**
@@ -209,7 +216,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<String>();
+        List<String> emails = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             emails.add(cursor.getString(ProfileQuery.ADDRESS));
@@ -238,7 +245,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginActivity.this,
+                new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
@@ -260,25 +267,23 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+            RESTCaller restCall = new RESTCaller();
+            restCall.addParam("email", mEmail);
+            restCall.addParam("password", mPassword);
+            JSONObject response = restCall.executeCall(ApiUrls.HTTP + ApiUrls.LOCALHOST_VM_IP + ApiUrls.URL_DOTS
+                    + ApiUrls.API_PORT + ApiUrls.URL_SLASH + ApiUrls.LOGIN_ADDRESS, HttpRequestMethod.GET);
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+            if(response != null) {
+                try {
+                    if (HttpURLConnection.HTTP_OK == Integer.valueOf(response.get("responseCode").toString())) {
+                        return true;
+                    }
+                } catch (JSONException e) {
+                    Log.e("LoginActivity", "Error at parsing JSON!");
                 }
             }
 
-            // TODO: register the new account here.
-            return true;
+            return false;
         }
 
         @Override
