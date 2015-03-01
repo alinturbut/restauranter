@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'robolectric'
 
 android {
     compileSdkVersion 21
@@ -22,7 +21,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 21
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
     }
     buildTypes {
         release {
@@ -32,14 +31,9 @@ android {
     }
 }
 
-configurations {
-    all*.exclude group: 'com.android.support', module: 'support-v4'
-}
-
 dependencies {
-    compile 'junit:junit:4.12'
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'junit:junit:4.12'
     compile 'com.google.android.gms:play-services:6.5.87'
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'org.robolectric:robolectric:2.4'
 }
