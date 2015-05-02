@@ -44,12 +44,8 @@ import java.util.List;
  * @author alinturbut.
  */
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
     private UserLoginTask mAuthTask = null;
 
-    // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -60,7 +56,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
@@ -68,7 +63,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                if (id == R.id.loginAction || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -93,11 +88,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     }
 
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
     public void attemptLogin() {
         if (mAuthTask != null) {
             return;
@@ -154,14 +144,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         return password.length() >= 3;
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -183,8 +167,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 }
             });
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
@@ -263,7 +245,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             RESTCaller restCall = new RESTCaller();
             restCall.addParam("email", mEmail);
             restCall.addParam("password", mPassword);
-            JSONObject response = restCall.executeCall(ApiUrls.HTTP + ApiUrls.LOCALHOST_VM_IP + ApiUrls.URL_DOTS
+            JSONObject response = restCall.executeCall(ApiUrls.HTTP + ApiUrls.CURRENT_LOCALHOST_IP + ApiUrls.URL_DOTS
                     + ApiUrls.API_PORT + ApiUrls.URL_SLASH + ApiUrls.LOGIN_ADDRESS, HttpRequestMethod.GET);
 
             if(response != null) {

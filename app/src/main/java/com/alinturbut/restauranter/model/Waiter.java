@@ -1,9 +1,11 @@
 package com.alinturbut.restauranter.model;
 
+import java.io.Serializable;
+
 /**
  * @author alinturbut.
  */
-public class Waiter {
+public class Waiter implements Serializable {
     private String id;
     private String firstName;
     private String lastName;

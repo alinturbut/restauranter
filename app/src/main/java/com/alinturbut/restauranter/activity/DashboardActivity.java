@@ -2,7 +2,12 @@ package com.alinturbut.restauranter.activity;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -17,16 +22,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.alinturbut.restauranter.R;
-import com.alinturbut.restauranter.fragment.OrderFragment;
+import com.alinturbut.restauranter.service.RestaurantFactsService;
+import com.alinturbut.restauranter.view.fragment.MenuCategoryFragment;
+import com.alinturbut.restauranter.view.fragment.MenuItemFragment;
+import com.alinturbut.restauranter.view.fragment.OrderFragment;
 
-public class DashboardActivity extends ActionBarActivity implements OrderFragment.OnFragmentInteractionListener {
+public class DashboardActivity extends ActionBarActivity implements OrderFragment.OnFragmentInteractionListener,
+        MenuCategoryFragment.OnFragmentInteractionListener, MenuItemFragment.OnFragmentInteractionListener{
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private ListView leftDrawerList;
     private ArrayAdapter<String> navigationDrawerAdapter;
-    private String[] leftSliderData = {"Orders", "Menu", "Tables", "Restaurant facts"};
+    private String[] leftSliderData = {"Orders", "Menu", "Tables", "Offers", "Restaurant facts"};
     private CharSequence mTitle;
 
     @Override
@@ -35,9 +44,10 @@ public class DashboardActivity extends ActionBarActivity implements OrderFragmen
         setContentView(R.layout.activity_dashboard);
         initView();
         if (toolbar != null) {
-            setSupportActionBar(toolbar);
+           setSupportActionBar(toolbar);
         }
         initDrawer();
+        initDatabase();
     }
 
     private void initView() {
@@ -109,8 +119,14 @@ public class DashboardActivity extends ActionBarActivity implements OrderFragmen
         return super.onOptionsItemSelected(item);
     }
 
+    private void initDatabase() {
+        Intent intent = new Intent(this, RestaurantFactsService.class);
+        intent.putExtra("Action",RestaurantFactsService.INTENT_POPULATE_FACTS_ACTION);
+        startService(intent);
+    }
+
     @Override
-    public void onFragmentInteraction(String id) {
+    public void onFragmentInteraction(Uri uri) {
 
     }
 
@@ -125,8 +141,17 @@ public class DashboardActivity extends ActionBarActivity implements OrderFragmen
             Fragment fragment = new Fragment();
             FragmentManager fragmentManager = getFragmentManager();
             switch(position) {
-                case(0):
+                case 0:
                     fragment = new OrderFragment();
+                    mTitle = getResources().getString(R.string.title_order_fragment);
+                    break;
+                case 1:
+                    fragment = new MenuCategoryFragment();
+                    mTitle = getResources().getString(R.string.title_menu_fragment);
+                    break;
+                case 4:
+                    Intent intent = new Intent(getApplicationContext(), RestaurantFactListActivity.class);
+                    startActivity(intent);
                     break;
                 default:
             }
@@ -134,8 +159,29 @@ public class DashboardActivity extends ActionBarActivity implements OrderFragmen
 
             leftDrawerList.setItemChecked(position, true);
             drawerLayout.closeDrawers();
-            mTitle = "Orders";
         }
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.registerReceiver(startMenuItemFragment, new IntentFilter(MenuItemFragment.START_MENUITEM_FRAGMENT));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        this.unregisterReceiver(startMenuItemFragment);
+    }
+
+    private BroadcastReceiver startMenuItemFragment = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String categoryId = intent.getStringExtra("Category");
+            Fragment fragment = MenuItemFragment.newInstance(categoryId);
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.menu_category_layout, fragment).commit();
+        }
+    };
 }

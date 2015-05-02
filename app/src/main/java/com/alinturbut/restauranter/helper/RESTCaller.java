@@ -33,6 +33,8 @@ import static com.alinturbut.restauranter.helper.HttpConstants.READ_TIMEOUT;
 public class RESTCaller {
     private ArrayList<NameValuePair> params;
     private ArrayList<NameValuePair> header;
+    private String url;
+    private HttpRequestMethod reguestMethod;
 
     public static RESTCaller create() {
         return new RESTCaller();
@@ -49,6 +51,14 @@ public class RESTCaller {
 
     public void addHeader(String name, String value) {
         this.header.add(new BasicNameValuePair(name, value));
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setHttpRequestMethod(HttpRequestMethod method) {
+        this.reguestMethod = method;
     }
 
     /**
@@ -89,6 +99,14 @@ public class RESTCaller {
         }
 
         //TODO: verify if this is generic enough
+        return null;
+    }
+
+    public JSONObject executeCall() {
+        if(this.url != null && !this.url.isEmpty() && this.reguestMethod != null) {
+            return this.executeCall(url, reguestMethod);
+        }
+
         return null;
     }
 

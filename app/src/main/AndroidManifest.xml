@@ -12,20 +12,57 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/myAppTheme" >
+        android:theme="@style/restauranterTheme" >
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/app_name"
+            android:exported="true"
             android:windowSoftInputMode="adjustResize|stateVisible" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.DashboardActivity"
-            android:label="@string/app_name">
-            <!--android:parentActivityName=".activity.LoginActivity" >-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value="com.alinturbut.restauranter.activity.LoginActivity" />-->
+            android:label="@string/app_name" >
+
+            <!-- android:parentActivityName=".activity.LoginActivity" > -->
+            <!-- <meta-data -->
+            <!-- android:name="android.support.PARENT_ACTIVITY" -->
+            <!-- android:value="com.alinturbut.restauranter.activity.LoginActivity" /> -->
         </activity>
+
+        <service
+            android:name=".service.CachingService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+        <service
+            android:name=".service.MenuService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+        <service
+            android:name=".service.RestaurantFactsService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <activity
+            android:name=".activity.RestaurantFactListActivity"
+            android:label="@string/title_restaurantfact_list" >
+        </activity>
+        <activity
+            android:name=".activity.RestaurantFactDetailActivity"
+            android:label="@string/title_restaurantfact_detail"
+            android:parentActivityName=".activity.RestaurantFactListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.alinturbut.restauranter.activity.RestaurantFactListActivity" />
+        </activity>
+
     </application>
 
 </manifest>

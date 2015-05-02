@@ -1,23 +1,25 @@
 package com.alinturbut.restauranter.model;
 
+import java.io.Serializable;
+
 /**
  * @author alinturbut.
  */
-public class Category {
-    private String id;
+public class Category implements Serializable {
+    private String _id;
     private String name;
 
-    public Category(String id, String name) {
-        this.id = id;
+    public Category(String _id, String name) {
+        this._id = _id;
         this.name = name;
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this._id = id;
     }
 
     public String getName() {

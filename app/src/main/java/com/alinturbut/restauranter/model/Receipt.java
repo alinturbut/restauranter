@@ -1,11 +1,12 @@
 package com.alinturbut.restauranter.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author alinturbut.
  */
-public class Receipt {
+public class Receipt implements Serializable {
     private String id;
     private String orderId;
     private String waiterId;

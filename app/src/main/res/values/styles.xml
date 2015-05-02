@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="myAppTheme" parent="Theme.AppCompat.Light">
+    <style name="restauranterTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryColorDark</item>
         <item name="android:windowNoTitle">true</item>

@@ -1,9 +1,11 @@
 package com.alinturbut.restauranter.model;
 
+import java.io.Serializable;
+
 /**
  * @author alinturbut.
  */
-public class Drink {
+public class Drink extends MenuItem implements Serializable {
     private String id;
     private String type;
     private String categoryId;

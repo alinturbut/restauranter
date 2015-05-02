@@ -1,15 +1,17 @@
 package com.alinturbut.restauranter.model;
 
+import java.io.Serializable;
+
 /**
  * @author alinturbut.
  */
-public class Food {
+public class Food extends MenuItem implements Serializable {
     private String id;
     private String categoryId;
     private String name;
-    private String price;
+    private int price;
 
-    public Food(String id, String categoryId, String name, String price) {
+    public Food(String id, String categoryId, String name, int price) {
         this.id = id;
         this.categoryId = categoryId;
         this.name = name;
@@ -32,11 +34,11 @@ public class Food {
         this.name = name;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

@@ -1,11 +1,12 @@
 package com.alinturbut.restauranter.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author alinturbut.
  */
-public class Order {
+public class Order implements Serializable {
     private String id;
     private List<Drink> drinks;
     private List<Food> foods;
