@@ -11,12 +11,14 @@ public class Order implements Serializable {
     private List<Drink> drinks;
     private List<Food> foods;
     private int price;
+    private String waiterId;
 
-    public Order(String id, List<Drink> drinks, List<Food> foods, int price) {
+    public Order(String id, List<Drink> drinks, List<Food> foods, String waiterId) {
         this.id = id;
         this.drinks = drinks;
         this.foods = foods;
-        this.price = price;
+        this.price = calculatePrice();
+        this.waiterId = waiterId;
     }
 
     public String getId() {
@@ -49,5 +51,26 @@ public class Order implements Serializable {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    private int calculatePrice() {
+        int price = 0;
+        for (Food food : this.foods) {
+            price += food.getPrice();
+        }
+
+        for (Drink drink : this.drinks) {
+            price += drink.getPrice();
+        }
+
+        return price;
+    }
+
+    public String getWaiterId() {
+        return waiterId;
+    }
+
+    public void setWaiterId(String waiterId) {
+        this.waiterId = waiterId;
     }
 }

@@ -20,9 +20,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.alinturbut.restauranter.R;
 import com.alinturbut.restauranter.service.RestaurantFactsService;
+import com.alinturbut.restauranter.service.SharedPreferencesService;
 import com.alinturbut.restauranter.view.fragment.MenuCategoryFragment;
 import com.alinturbut.restauranter.view.fragment.MenuItemFragment;
 import com.alinturbut.restauranter.view.fragment.OrderFragment;
@@ -35,7 +37,7 @@ public class DashboardActivity extends ActionBarActivity implements OrderFragmen
     private ActionBarDrawerToggle drawerToggle;
     private ListView leftDrawerList;
     private ArrayAdapter<String> navigationDrawerAdapter;
-    private String[] leftSliderData = {"Orders", "Menu", "Tables", "Offers", "Restaurant facts"};
+    private String[] leftSliderData = {"Orders", "Menu", "Tables", "Offers", "Restaurant facts", "Sign out"};
     private CharSequence mTitle;
 
     @Override
@@ -152,6 +154,11 @@ public class DashboardActivity extends ActionBarActivity implements OrderFragmen
                 case 4:
                     Intent intent = new Intent(getApplicationContext(), RestaurantFactListActivity.class);
                     startActivity(intent);
+                    break;
+                case 5:
+                    SharedPreferencesService.removeLoggedWaiterSession(getApplicationContext());
+                    onBackPressed();
+                    Toast.makeText(getApplicationContext(), "You logged out!", Toast.LENGTH_SHORT);
                     break;
                 default:
             }

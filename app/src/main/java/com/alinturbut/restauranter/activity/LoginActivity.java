@@ -30,6 +30,8 @@ import com.alinturbut.restauranter.R;
 import com.alinturbut.restauranter.helper.ApiUrls;
 import com.alinturbut.restauranter.helper.RESTCaller;
 import com.alinturbut.restauranter.model.HttpRequestMethod;
+import com.alinturbut.restauranter.model.Waiter;
+import com.alinturbut.restauranter.service.SharedPreferencesService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,6 +60,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
+        attemptSessionLogin();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -81,6 +84,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private void attemptSessionLogin() {
+        Waiter loggedWaiter = SharedPreferencesService.getLoggedWaiter(getApplicationContext());
+        if(loggedWaiter != null) {
+            Intent startDashboard = new Intent(getApplicationContext(), DashboardActivity.class);
+            startActivity(startDashboard);
+        }
     }
 
     private void populateAutoComplete() {
@@ -251,6 +262,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             if(response != null) {
                 try {
                     if (HttpURLConnection.HTTP_OK == Integer.valueOf(response.get("responseCode").toString())) {
+                        SharedPreferencesService.saveLoggedWaiter(getApplicationContext(), response.get("waiter").toString());
                         return true;
                     }
                 } catch (JSONException e) {

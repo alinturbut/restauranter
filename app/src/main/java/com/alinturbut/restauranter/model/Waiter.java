@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author alinturbut.
  */
 public class Waiter implements Serializable {
-    private String id;
+    private String _id;
     private String firstName;
     private String lastName;
     private String username;
@@ -14,8 +14,8 @@ public class Waiter implements Serializable {
     private int monthsOfExperience;
     private String role;
 
-    public Waiter(String id, String firstName, String lastName, String username, String password, int monthsOfExperience, String role) {
-        this.setId(id);
+    public Waiter(String _id, String firstName, String lastName, String username, String password, int monthsOfExperience, String role) {
+        this.setId(_id);
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -73,10 +73,10 @@ public class Waiter implements Serializable {
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this._id = id;
     }
 }
