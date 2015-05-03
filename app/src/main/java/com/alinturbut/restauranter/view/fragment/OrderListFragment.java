@@ -17,26 +17,36 @@ import android.view.ViewGroup;
 
 import com.alinturbut.restauranter.R;
 import com.alinturbut.restauranter.model.Category;
+import com.alinturbut.restauranter.model.Order;
+import com.alinturbut.restauranter.model.Waiter;
 import com.alinturbut.restauranter.service.MenuService;
+import com.alinturbut.restauranter.service.OrderCachingService;
+import com.alinturbut.restauranter.service.SharedPreferencesService;
+import com.alinturbut.restauranter.view.adapter.OrderAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class OrderFragment extends Fragment {
+public class OrderListFragment extends Fragment {
     private RecyclerView recList;
     private OnFragmentInteractionListener mListener;
+    private OrderAdapter mOrderAdapter;
+    private List<Order> orderList;
+    private Waiter loggedWaiter;
 
-    public static OrderFragment newInstance() {
-        OrderFragment fragment = new OrderFragment();
+    public static OrderListFragment newInstance() {
+        OrderListFragment fragment = new OrderListFragment();
         return fragment;
     }
 
-    public OrderFragment() {
+    public OrderListFragment() {
     }
 
     @Override
     public void onStart() {
         super.onStart();
         Intent intent = new Intent(getActivity(), MenuService.class);
+        intent.putExtra("Action", MenuService.INTENT_GET_CATEGORIES);
         getActivity().startService(intent);
         initView();
     }
@@ -46,6 +56,13 @@ public class OrderFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
+
+        loggedWaiter = SharedPreferencesService.getLoggedWaiter(getActivity().getApplicationContext());
+
+        orderList = new ArrayList<>();
+        orderList.add(OrderCachingService.getInstance(loggedWaiter.getId()).getActiveOrder());
+        mOrderAdapter = new OrderAdapter(orderList);
+        recList.setAdapter(mOrderAdapter);
     }
 
     @Override

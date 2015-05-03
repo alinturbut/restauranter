@@ -1,6 +1,7 @@
 package com.alinturbut.restauranter.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,8 +9,8 @@ import java.util.List;
  */
 public class Order implements Serializable {
     private String id;
-    private List<Drink> drinks;
-    private List<Food> foods;
+    private List<Drink> drinks = new ArrayList<>();
+    private List<Food> foods = new ArrayList<>();
     private int price;
     private String waiterId;
 
@@ -20,6 +21,8 @@ public class Order implements Serializable {
         this.price = calculatePrice();
         this.waiterId = waiterId;
     }
+
+    public Order() {}
 
     public String getId() {
         return id;
@@ -72,5 +75,21 @@ public class Order implements Serializable {
 
     public void setWaiterId(String waiterId) {
         this.waiterId = waiterId;
+    }
+
+    public void addDrink(Drink drink) {
+        this.drinks.add(drink);
+    }
+
+    public void removeDrink(Drink drink) {
+        this.drinks.remove(drink);
+    }
+
+    public void addFood(Food food) {
+        this.foods.add(food);
+    }
+
+    public void removeFood(Food food) {
+        this.foods.remove(food);
     }
 }

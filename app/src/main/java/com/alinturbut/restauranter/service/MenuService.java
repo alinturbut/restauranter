@@ -46,6 +46,9 @@ public class MenuService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         String action = intent.getStringExtra("Action");
+        if(action == null) {
+            return;
+        }
         switch (action) {
             case INTENT_GET_CATEGORIES:
                 getAllCategoriesAndPublish();

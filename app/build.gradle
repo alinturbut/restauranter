@@ -35,14 +35,14 @@ android {
     productFlavors {
     }
 
-    //create apk file
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            output.outputFile = new File(
-                    output.outputFile.parent,
-                    "Restauranter" + "-${variant.versionName}.apk")
-        }
-    }
+//    //create apk file
+//    applicationVariants.all { variant ->
+//        variant.outputs.each { output ->
+//            output.outputFile = new File(
+//                    output.outputFile.parent,
+//                    "Restauranter" + "-${variant.versionName}.apk")
+//        }
+//    }
 }
 
 dependencies {

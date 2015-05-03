@@ -91,6 +91,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         if(loggedWaiter != null) {
             Intent startDashboard = new Intent(getApplicationContext(), DashboardActivity.class);
             startActivity(startDashboard);
+            finish();
         }
     }
 
@@ -281,6 +282,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             if (success) {
                 Intent startDashboard = new Intent(getApplicationContext(), DashboardActivity.class);
                 startActivity(startDashboard);
+                finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

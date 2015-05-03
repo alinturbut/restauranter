@@ -18,8 +18,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.alinturbut.restauranter.R;
+import com.alinturbut.restauranter.model.Drink;
+import com.alinturbut.restauranter.model.Food;
 import com.alinturbut.restauranter.model.MenuItem;
+import com.alinturbut.restauranter.model.Waiter;
 import com.alinturbut.restauranter.service.MenuService;
+import com.alinturbut.restauranter.service.OrderCachingService;
+import com.alinturbut.restauranter.service.SharedPreferencesService;
 import com.alinturbut.restauranter.view.adapter.MenuItemAdapter;
 import com.github.brnunes.swipeablerecyclerview.SwipeableRecyclerViewTouchListener;
 
@@ -31,6 +36,9 @@ public class MenuItemFragment extends Fragment {
     private static final String CATEGORY_PARAM = "categoryParam";
     private String categoryId;
     private RecyclerView recList;
+    private MenuItemAdapter listAdapter;
+    private ArrayList<MenuItem> allMenuItems;
+    private Waiter loggedWaiter;
 
     public static MenuItemFragment newInstance(String categoryId) {
         MenuItemFragment fragment = new MenuItemFragment();
@@ -68,6 +76,7 @@ public class MenuItemFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
+        loggedWaiter = SharedPreferencesService.getLoggedWaiter(getActivity().getApplicationContext());
 
         SwipeableRecyclerViewTouchListener swipeTouchListener =
                 new SwipeableRecyclerViewTouchListener(recList,
@@ -81,7 +90,13 @@ public class MenuItemFragment extends Fragment {
                             public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
                                 for (int position : reverseSortedPositions) {
                                     Toast.makeText(getActivity().getApplicationContext(),
-                                            "Item added to order", Toast.LENGTH_SHORT).show();
+                                            "Item removed from order", Toast.LENGTH_SHORT).show();
+                                    if(allMenuItems.get(position) instanceof Drink) {
+                                        OrderCachingService.getInstance(loggedWaiter.getId()).removeDrinkFromActiveOrder((Drink) allMenuItems.get(position));
+                                    } else {
+                                        OrderCachingService.getInstance(loggedWaiter.getId()).removeFoodFromActiveOrder((Food) allMenuItems.get(position));
+
+                                    }
                                 }
                             }
 
@@ -89,7 +104,13 @@ public class MenuItemFragment extends Fragment {
                             public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
                                 for (int position : reverseSortedPositions) {
                                     Toast.makeText(getActivity().getApplicationContext(),
-                                            "Item removed from order", Toast.LENGTH_SHORT).show();
+                                            "Item added to order", Toast.LENGTH_SHORT).show();
+                                    if(allMenuItems.get(position) instanceof Drink) {
+                                        OrderCachingService.getInstance(loggedWaiter.getId()).addDrinkToActiveOrder((Drink) allMenuItems.get(position));
+                                    } else {
+                                        OrderCachingService.getInstance(loggedWaiter.getId()).addFoodToActiveOrder((Food) allMenuItems.get(position));
+
+                                    }
                                 }
                             }
                         });
@@ -137,9 +158,9 @@ public class MenuItemFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
-                ArrayList<MenuItem> allMenuItems = (ArrayList<MenuItem>) bundle.get(MenuService.ALL_MENU_ITEMS);
+                allMenuItems = (ArrayList<MenuItem>) bundle.get(MenuService.ALL_MENU_ITEMS);
                 Log.d("MenuItemFragment", allMenuItems.toString());
-                MenuItemAdapter listAdapter = new MenuItemAdapter(allMenuItems, Resources.getSystem());
+                listAdapter = new MenuItemAdapter(allMenuItems, Resources.getSystem());
                 recList.setAdapter(listAdapter);
             }
         }

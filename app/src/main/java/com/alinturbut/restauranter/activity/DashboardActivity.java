@@ -27,9 +27,9 @@ import com.alinturbut.restauranter.service.RestaurantFactsService;
 import com.alinturbut.restauranter.service.SharedPreferencesService;
 import com.alinturbut.restauranter.view.fragment.MenuCategoryFragment;
 import com.alinturbut.restauranter.view.fragment.MenuItemFragment;
-import com.alinturbut.restauranter.view.fragment.OrderFragment;
+import com.alinturbut.restauranter.view.fragment.OrderListFragment;
 
-public class DashboardActivity extends ActionBarActivity implements OrderFragment.OnFragmentInteractionListener,
+public class DashboardActivity extends ActionBarActivity implements OrderListFragment.OnFragmentInteractionListener,
         MenuCategoryFragment.OnFragmentInteractionListener, MenuItemFragment.OnFragmentInteractionListener{
 
     private Toolbar toolbar;
@@ -144,7 +144,7 @@ public class DashboardActivity extends ActionBarActivity implements OrderFragmen
             FragmentManager fragmentManager = getFragmentManager();
             switch(position) {
                 case 0:
-                    fragment = new OrderFragment();
+                    fragment = new OrderListFragment();
                     mTitle = getResources().getString(R.string.title_order_fragment);
                     break;
                 case 1:
@@ -157,8 +157,8 @@ public class DashboardActivity extends ActionBarActivity implements OrderFragmen
                     break;
                 case 5:
                     SharedPreferencesService.removeLoggedWaiterSession(getApplicationContext());
-                    onBackPressed();
                     Toast.makeText(getApplicationContext(), "You logged out!", Toast.LENGTH_SHORT);
+                    onSignOut();
                     break;
                 default:
             }
@@ -169,6 +169,18 @@ public class DashboardActivity extends ActionBarActivity implements OrderFragmen
         }
 
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    private void onSignOut() {
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
 
     @Override
     public void onResume() {

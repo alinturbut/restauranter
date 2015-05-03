@@ -6,31 +6,31 @@
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view_category"
+        android:id="@+id/card_view_order_item"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        card_view:cardCornerRadius="10dp"
         android:layout_margin="5dp"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        card_view:cardElevation="10dp">
+        card_view:cardCornerRadius="10dp"
+        card_view:cardElevation="5dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/loginBackground">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/loginBackground">
 
-        <ImageView
-            android:id="@+id/category_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/order_item_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-        <TextView
-            android:id="@+id/category_text"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"/>
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/order_item_text"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"/>
+        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 
