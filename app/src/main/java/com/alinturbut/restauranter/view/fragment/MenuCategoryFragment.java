@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -96,7 +95,7 @@ public class MenuCategoryFragment extends Fragment {
             if(bundle != null) {
                 ArrayList<Category> allMenuCategories = (ArrayList<Category>) bundle.get(MenuService.ALL_CATEGORIES);
                 Log.d("MenuFragment", allMenuCategories.toString());
-                MenuCategoryListAdapter listAdapter = new MenuCategoryListAdapter(allMenuCategories, Resources.getSystem(), getActivity().getApplicationContext());
+                MenuCategoryListAdapter listAdapter = new MenuCategoryListAdapter(allMenuCategories, getActivity().getResources(), getActivity().getApplicationContext());
                 recList.setAdapter(listAdapter);
             }
         }

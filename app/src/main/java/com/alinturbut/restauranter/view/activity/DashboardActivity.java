@@ -1,4 +1,4 @@
-package com.alinturbut.restauranter.activity;
+package com.alinturbut.restauranter.view.activity;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -162,7 +162,7 @@ public class DashboardActivity extends ActionBarActivity implements OrderListFra
                     break;
                 default:
             }
-            fragmentManager.beginTransaction().replace(R.id.dashboard_frame, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.dashboard_frame, fragment).addToBackStack(null).commit();
 
             leftDrawerList.setItemChecked(position, true);
             drawerLayout.closeDrawers();
@@ -172,7 +172,12 @@ public class DashboardActivity extends ActionBarActivity implements OrderListFra
 
     @Override
     public void onBackPressed() {
-        finish();
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStackImmediate();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void onSignOut() {
@@ -198,9 +203,10 @@ public class DashboardActivity extends ActionBarActivity implements OrderListFra
         @Override
         public void onReceive(Context context, Intent intent) {
             String categoryId = intent.getStringExtra("Category");
-            Fragment fragment = MenuItemFragment.newInstance(categoryId);
+            int imageId = intent.getIntExtra("ImageId",0);
+            Fragment fragment = MenuItemFragment.newInstance(categoryId,imageId);
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.menu_category_layout, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.menu_category_layout, fragment).addToBackStack(null).commit();
         }
     };
 }

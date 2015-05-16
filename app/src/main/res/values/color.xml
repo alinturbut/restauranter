@@ -4,4 +4,5 @@
     <color name="primaryColorDark">#0D47A1</color>
     <color name="loginBackground">#ffffffff</color>
     <color name="generalBackground">#ffafafaf</color>
+    <color name="menuItemColor">#ffffffff</color>
 </resources>

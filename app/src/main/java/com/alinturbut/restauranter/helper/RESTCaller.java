@@ -98,7 +98,6 @@ public class RESTCaller {
             Log.e("RESTCaller", "Error at creating the JSON object");
         }
 
-        //TODO: verify if this is generic enough
         return null;
     }
 

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alinturbut.restauranter.R;
+import com.alinturbut.restauranter.helper.StringConstants;
 import com.alinturbut.restauranter.model.MenuItem;
 
 import java.util.List;
@@ -17,10 +18,14 @@ import java.util.List;
  * @author alinturbut.
  */
 public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MenuItemHolder> {
-    List<MenuItem> menuItemList;
+    private List<MenuItem> menuItemList;
+    private int imageId;
+    private Resources res;
 
-    public MenuItemAdapter(List<MenuItem> menuItems, Resources res) {
+    public MenuItemAdapter(List<MenuItem> menuItems, Resources res, int imageId) {
         this.menuItemList = menuItems;
+        this.imageId = imageId;
+        this.res = res;
     }
 
     @Override
@@ -34,6 +39,8 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MenuIt
     public void onBindViewHolder(MenuItemHolder holder, int position) {
         MenuItem menuItem = menuItemList.get(position);
         holder.menuItemText.setText(menuItem.getName());
+        holder.menuItemImage.setImageDrawable(res.getDrawable(imageId));
+        holder.priceItemText.setText(menuItem.getPrice() + " " + StringConstants.CURRENCY);
     }
 
     @Override
@@ -44,11 +51,13 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MenuIt
     public class MenuItemHolder extends RecyclerView.ViewHolder {
         private ImageView menuItemImage;
         private TextView menuItemText;
+        private TextView priceItemText;
 
         public MenuItemHolder(View itemView) {
             super(itemView);
             menuItemImage = (ImageView) itemView.findViewById(R.id.menu_item_image);
             menuItemText = (TextView) itemView.findViewById(R.id.menu_item_text);
+            priceItemText = (TextView) itemView.findViewById(R.id.menu_item_price);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.alinturbut.restauranter.activity;
+package com.alinturbut.restauranter.view.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

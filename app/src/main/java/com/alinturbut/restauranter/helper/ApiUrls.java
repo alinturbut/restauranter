@@ -7,7 +7,7 @@ public class ApiUrls {
     public static int API_PORT = 8089;
     public static String API_DOMAIN = "localhost";
     public static String LOCALHOST_VM_IP = "192.168.56.1";
-    public static String CURRENT_LOCALHOST_IP = "192.168.1.103";
+    public static String CURRENT_LOCALHOST_IP = "192.168.1.102";
     public static String HTTP = "http://";
     public static String LOGIN_ADDRESS = "login";
     public static String CATEGORY_ADDRESS = "category";

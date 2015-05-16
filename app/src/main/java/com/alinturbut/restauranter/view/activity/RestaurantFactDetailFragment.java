@@ -1,4 +1,4 @@
-package com.alinturbut.restauranter.activity;
+package com.alinturbut.restauranter.view.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

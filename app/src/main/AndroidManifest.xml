@@ -12,9 +12,10 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/restauranterTheme" >
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".view.activity.LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|stateVisible" >
@@ -25,13 +26,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.DashboardActivity"
+            android:name=".view.activity.DashboardActivity"
             android:label="@string/app_name" >
 
             <!-- android:parentActivityName=".activity.LoginActivity" > -->
             <!-- <meta-data -->
             <!-- android:name="android.support.PARENT_ACTIVITY" -->
-            <!-- android:value="com.alinturbut.restauranter.activity.LoginActivity" /> -->
+            <!-- android:value="com.alinturbut.restauranter.view.activity.LoginActivity" /> -->
         </activity>
 
         <service
@@ -51,16 +52,16 @@
         </service>
 
         <activity
-            android:name=".activity.RestaurantFactListActivity"
+            android:name=".view.activity.RestaurantFactListActivity"
             android:label="@string/title_restaurantfact_list" >
         </activity>
         <activity
-            android:name=".activity.RestaurantFactDetailActivity"
+            android:name=".view.activity.RestaurantFactDetailActivity"
             android:label="@string/title_restaurantfact_detail"
-            android:parentActivityName=".activity.RestaurantFactListActivity" >
+            android:parentActivityName=".view.activity.RestaurantFactListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.alinturbut.restauranter.activity.RestaurantFactListActivity" />
+                android:value=".view.activity.RestaurantFactListActivity" />
         </activity>
 
     </application>

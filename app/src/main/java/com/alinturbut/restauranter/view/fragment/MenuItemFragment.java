@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,16 +33,19 @@ public class MenuItemFragment extends Fragment {
     public static final String START_MENUITEM_FRAGMENT = "alinturbut.menuitemfragment.start";
     private OnFragmentInteractionListener mListener;
     private static final String CATEGORY_PARAM = "categoryParam";
+    private static final String IMAGE_ID_PARAM = "imageParam";
     private String categoryId;
+    private int imageId;
     private RecyclerView recList;
     private MenuItemAdapter listAdapter;
     private ArrayList<MenuItem> allMenuItems;
     private Waiter loggedWaiter;
 
-    public static MenuItemFragment newInstance(String categoryId) {
+    public static MenuItemFragment newInstance(String categoryId, int imageId) {
         MenuItemFragment fragment = new MenuItemFragment();
         Bundle args = new Bundle();
         args.putString(CATEGORY_PARAM, categoryId);
+        args.putInt(IMAGE_ID_PARAM, imageId);
         fragment.setArguments(args);
 
         return fragment;
@@ -58,6 +60,7 @@ public class MenuItemFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if(getArguments() != null) {
             this.categoryId = getArguments().getString(CATEGORY_PARAM);
+            this.imageId = getArguments().getInt(IMAGE_ID_PARAM);
         }
     }
 
@@ -160,7 +163,7 @@ public class MenuItemFragment extends Fragment {
             if(bundle != null) {
                 allMenuItems = (ArrayList<MenuItem>) bundle.get(MenuService.ALL_MENU_ITEMS);
                 Log.d("MenuItemFragment", allMenuItems.toString());
-                listAdapter = new MenuItemAdapter(allMenuItems, Resources.getSystem());
+                listAdapter = new MenuItemAdapter(allMenuItems, getActivity().getResources(), imageId);
                 recList.setAdapter(listAdapter);
             }
         }

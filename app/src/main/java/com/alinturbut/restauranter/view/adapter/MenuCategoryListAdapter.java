@@ -42,30 +42,49 @@ public class MenuCategoryListAdapter extends RecyclerView.Adapter<MenuCategoryLi
     public void onBindViewHolder(CategoryViewHolder categoryViewHolder, int i) {
         final Category category = categoryList.get(i);
         categoryViewHolder.categoryText.setText(category.getName());
+        int imageId = 0;
+        switch(category.getName()) {
+            case "Pizza":
+                categoryViewHolder.categoryImage.setImageDrawable(res.getDrawable(R.drawable.pizza_1));
+                imageId = R.drawable.pizza_1;
+                break;
+            case "Cocktails":
+                categoryViewHolder.categoryImage.setImageDrawable(res.getDrawable(R.drawable.cocktails));
+                imageId = R.drawable.cocktails;
+                break;
+            case "Breakfast":
+                categoryViewHolder.categoryImage.setImageDrawable(res.getDrawable(R.drawable.breakfast));
+                imageId = R.drawable.breakfast;
+                break;
+            case "Hot Meals":
+                categoryViewHolder.categoryImage.setImageDrawable(res.getDrawable(R.drawable.hot_meals));
+                imageId = R.drawable.hot_meals;
+                break;
+            case "Beer":
+                categoryViewHolder.categoryImage.setImageDrawable(res.getDrawable(R.drawable.beers));
+                imageId = R.drawable.beers;
+                break;
+            case "Freshners":
+                categoryViewHolder.categoryImage.setImageDrawable(res.getDrawable(R.drawable.fresheners));
+                imageId = R.drawable.fresheners;
+                break;
+            case "Driver's Cocktails":
+                categoryViewHolder.categoryImage.setImageDrawable(res.getDrawable(R.drawable.cocktails));
+                imageId = R.drawable.cocktails;
+                break;
+        }
+
+        final int finalImageId = imageId;
         categoryViewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuItemFragment.START_MENUITEM_FRAGMENT);
                 intent.putExtra("Category", category.getId());
+                intent.putExtra("ImageId", finalImageId);
                 context.sendBroadcast(intent);
             }
         });
-        switch(category.getName()) {
-            case "Pizza":
-                int imageId = res.getIdentifier("com.alinturbut.restauranter:drawable/pizza_1.jpg", null, null);
-                categoryViewHolder.categoryImage.setImageResource(imageId);
-                break;
-            case "Cocktails":
-                break;
-            case "Breakfast":
-                break;
-            case "Hot Meals":
-                break;
-            case "Beer":
-                break;
-            case "Freshners":
-                break;
-        }
+
     }
 
     @Override

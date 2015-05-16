@@ -4,7 +4,7 @@
     android:layout_marginRight="16dp" android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal" android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context="com.alinturbut.restauranter.activity.RestaurantFactListActivity">
+    tools:context="com.alinturbut.restauranter.view.activity.RestaurantFactListActivity">
 
     <!--
     This layout is a two-pane layout for the RestaurantFacts
@@ -13,7 +13,7 @@
     -->
 
     <fragment android:id="@+id/restaurantfact_list"
-        android:name="com.alinturbut.restauranter.activity.RestaurantFactListFragment"
+        android:name="com.alinturbut.restauranter.view.activity.RestaurantFactListFragment"
         android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
         tools:layout="@android:layout/list_content" />
 
