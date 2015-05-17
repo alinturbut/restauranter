@@ -21,14 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.alinturbut.restauranter.helper.ApiUrls.ALL;
-import static com.alinturbut.restauranter.helper.ApiUrls.API_PORT;
 import static com.alinturbut.restauranter.helper.ApiUrls.CATEGORY_ADDRESS;
-import static com.alinturbut.restauranter.helper.ApiUrls.CURRENT_LOCALHOST_IP;
 import static com.alinturbut.restauranter.helper.ApiUrls.DRINK_ADDRESS;
 import static com.alinturbut.restauranter.helper.ApiUrls.FIND_BY_CATEGORY_ID;
 import static com.alinturbut.restauranter.helper.ApiUrls.FOOD_ADDRESS;
 import static com.alinturbut.restauranter.helper.ApiUrls.HTTP;
-import static com.alinturbut.restauranter.helper.ApiUrls.URL_DOTS;
+import static com.alinturbut.restauranter.helper.ApiUrls.SERVER_IP;
 import static com.alinturbut.restauranter.helper.ApiUrls.URL_SLASH;
 
 public class MenuService extends IntentService {
@@ -71,8 +69,7 @@ public class MenuService extends IntentService {
     public void getAllCategoriesAndPublish() {
         ArrayList<Category> allMenuCategories = new ArrayList<>();
         RESTCaller networkRestCaller = new RESTCaller();
-        networkRestCaller.setUrl(HTTP + CURRENT_LOCALHOST_IP + URL_DOTS +
-                API_PORT + URL_SLASH + CATEGORY_ADDRESS + URL_SLASH + ALL);
+        networkRestCaller.setUrl(HTTP + SERVER_IP + URL_SLASH + CATEGORY_ADDRESS + URL_SLASH + ALL);
         networkRestCaller.setHttpRequestMethod(HttpRequestMethod.GET);
 
         JSONObject response = networkRestCaller.executeCall();
@@ -91,7 +88,7 @@ public class MenuService extends IntentService {
         ArrayList<Food> allFoodCategories = new ArrayList<>();
         RESTCaller networkRestCaller = new RESTCaller();
         networkRestCaller.setHttpRequestMethod(HttpRequestMethod.GET);
-        networkRestCaller.setUrl(HTTP + CURRENT_LOCALHOST_IP + URL_DOTS + API_PORT + URL_SLASH + FOOD_ADDRESS + URL_SLASH +
+        networkRestCaller.setUrl(HTTP + SERVER_IP + URL_SLASH + FOOD_ADDRESS + URL_SLASH +
                 FIND_BY_CATEGORY_ID);
         networkRestCaller.addParam("categoryId", categoryId);
 
@@ -111,7 +108,7 @@ public class MenuService extends IntentService {
         ArrayList<Drink> allDrinkCategories = new ArrayList<>();
         RESTCaller networkRestCaller = new RESTCaller();
         networkRestCaller.setHttpRequestMethod(HttpRequestMethod.GET);
-        networkRestCaller.setUrl(HTTP + CURRENT_LOCALHOST_IP + URL_DOTS + API_PORT + URL_SLASH + DRINK_ADDRESS + URL_SLASH +
+        networkRestCaller.setUrl(HTTP + SERVER_IP + URL_SLASH + DRINK_ADDRESS + URL_SLASH +
                 FIND_BY_CATEGORY_ID);
         networkRestCaller.addParam("categoryId", categoryId);
 

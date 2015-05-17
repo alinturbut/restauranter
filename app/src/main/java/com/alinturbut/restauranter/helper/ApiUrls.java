@@ -4,10 +4,13 @@ package com.alinturbut.restauranter.helper;
  * @author alinturbut.
  */
 public class ApiUrls {
-    public static int API_PORT = 8089;
+    public static int LOCAL_PORT = 8089;
+    public static int REMOTE_PORT = 8080;
+    public static int API_PORT = REMOTE_PORT;
     public static String API_DOMAIN = "localhost";
-    public static String LOCALHOST_VM_IP = "192.168.56.1";
-    public static String CURRENT_LOCALHOST_IP = "192.168.1.102";
+    public static String LOCALHOST_IP = "192.168.1.102:8089";
+    public static String RESTAURANTER_API = "api-restauranter.rhcloud.com";
+    public static String SERVER_IP = RESTAURANTER_API;
     public static String HTTP = "http://";
     public static String LOGIN_ADDRESS = "login";
     public static String CATEGORY_ADDRESS = "category";
@@ -17,4 +20,14 @@ public class ApiUrls {
     public static String ALL = "all";
     public static String URL_SLASH = "/";
     public static String URL_DOTS = ":";
+
+    public static void setUseLocalhost(boolean use) {
+        if (use) {
+            SERVER_IP = LOCALHOST_IP;
+            API_PORT = LOCAL_PORT;
+        } else {
+            SERVER_IP = RESTAURANTER_API;
+            API_PORT = REMOTE_PORT;
+        }
+    }
 }

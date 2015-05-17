@@ -257,8 +257,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             RESTCaller restCall = new RESTCaller();
             restCall.addParam("email", mEmail);
             restCall.addParam("password", mPassword);
-            JSONObject response = restCall.executeCall(ApiUrls.HTTP + ApiUrls.CURRENT_LOCALHOST_IP + ApiUrls.URL_DOTS
-                    + ApiUrls.API_PORT + ApiUrls.URL_SLASH + ApiUrls.LOGIN_ADDRESS, HttpRequestMethod.GET);
+            JSONObject response = restCall.executeCall(ApiUrls.HTTP + ApiUrls.SERVER_IP + ApiUrls.URL_SLASH + ApiUrls.LOGIN_ADDRESS, HttpRequestMethod.GET);
 
             if(response != null) {
                 try {

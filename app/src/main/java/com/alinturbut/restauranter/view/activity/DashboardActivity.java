@@ -28,6 +28,7 @@ import com.alinturbut.restauranter.service.SharedPreferencesService;
 import com.alinturbut.restauranter.view.fragment.MenuCategoryFragment;
 import com.alinturbut.restauranter.view.fragment.MenuItemFragment;
 import com.alinturbut.restauranter.view.fragment.OrderListFragment;
+import com.alinturbut.restauranter.view.fragment.SettingsFragment;
 
 public class DashboardActivity extends ActionBarActivity implements OrderListFragment.OnFragmentInteractionListener,
         MenuCategoryFragment.OnFragmentInteractionListener, MenuItemFragment.OnFragmentInteractionListener{
@@ -37,7 +38,7 @@ public class DashboardActivity extends ActionBarActivity implements OrderListFra
     private ActionBarDrawerToggle drawerToggle;
     private ListView leftDrawerList;
     private ArrayAdapter<String> navigationDrawerAdapter;
-    private String[] leftSliderData = {"Orders", "Menu", "Tables", "Offers", "Restaurant facts", "Sign out"};
+    private String[] leftSliderData = {"Orders", "Menu", "Tables", "Offers", "Restaurant facts", "Settings", "Sign out"};
     private CharSequence mTitle;
 
     @Override
@@ -156,6 +157,10 @@ public class DashboardActivity extends ActionBarActivity implements OrderListFra
                     startActivity(intent);
                     break;
                 case 5:
+                    fragment = SettingsFragment.newInstance();
+                    mTitle = getResources().getText(R.string.title_settings);
+                    break;
+                case 6:
                     SharedPreferencesService.removeLoggedWaiterSession(getApplicationContext());
                     Toast.makeText(getApplicationContext(), "You logged out!", Toast.LENGTH_SHORT);
                     onSignOut();

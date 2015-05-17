@@ -12,11 +12,24 @@ import com.google.gson.Gson;
 public class SharedPreferencesService {
     public static final String RESTAURANTER_PREFS = "com.alinturbut.restauranter";
     public static final String LOGGED_WAITER_PREFS = "waiter.logged";
+    public static final String LOCALHOST_USE = "localhost.use";
 
     public static void saveLoggedWaiter(Context ctx, String json) {
         SharedPreferences.Editor editor = ctx.getSharedPreferences(RESTAURANTER_PREFS, Context.MODE_PRIVATE).edit();
         editor.putString(LOGGED_WAITER_PREFS, json);
         editor.apply();
+    }
+
+    public static void saveLocalhostUse(Context ctx, boolean use) {
+        SharedPreferences.Editor editor = ctx.getSharedPreferences(RESTAURANTER_PREFS, Context.MODE_PRIVATE).edit();
+        editor.putBoolean(LOCALHOST_USE, use);
+        editor.apply();
+    }
+
+    public static boolean getLocalhostUse(Context ctx) {
+        SharedPreferences prefs = ctx.getSharedPreferences(RESTAURANTER_PREFS, Context.MODE_PRIVATE);
+
+        return prefs.getBoolean(LOCALHOST_USE, false);
     }
 
     public static void removeLoggedWaiterSession(Context ctx) {
