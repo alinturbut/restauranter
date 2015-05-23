@@ -8,9 +8,19 @@
     <string name="title_order_fragment">Orders</string>
     <string name="title_menu_fragment">Menu</string>
     <string name="title_settings">Settings</string>
-    <string name="server_settings">Server Settings</string>
+    <string name="title_tables">Tables</string>
+    <string name="server_settings">Server settings</string>
+    <string name="SignOut_settings">Sign out</string>
+    <string name="order_items">Order items</string>
+    <string name="order_items_total_price">Total price</string>
+    <string name="order_items_number_items">Quantity</string>
+    <string name="order_items_table">Table</string>
     <string name="settings_use_localhost_server">Use in-house server</string>
     <string name="title_restaurantfact_list">RestaurantFacts</string>
     <string name="title_restaurantfact_detail">RestaurantFact Detail</string>
+    <string name="transition_card_view">CardViewTransition</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

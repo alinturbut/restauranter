@@ -13,13 +13,15 @@ public class Order implements Serializable {
     private List<Food> foods = new ArrayList<>();
     private int price;
     private String waiterId;
+    private String tableId;
 
-    public Order(String id, List<Drink> drinks, List<Food> foods, String waiterId) {
+    public Order(String id, List<Drink> drinks, List<Food> foods, String waiterId, String tableId) {
         this.id = id;
         this.drinks = drinks;
         this.foods = foods;
         this.price = calculatePrice();
         this.waiterId = waiterId;
+        this.tableId = tableId;
     }
 
     public Order() {}
@@ -91,5 +93,13 @@ public class Order implements Serializable {
 
     public void removeFood(Food food) {
         this.foods.remove(food);
+    }
+
+    public String getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(String tableId) {
+        this.tableId = tableId;
     }
 }

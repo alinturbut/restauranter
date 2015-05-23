@@ -75,10 +75,12 @@ public class MenuService extends IntentService {
         JSONObject response = networkRestCaller.executeCall();
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Category>>(){}.getType();
-        try {
-            allMenuCategories = (ArrayList<Category>) gson.fromJson(response.get("categories").toString(), listType);
-        } catch (JSONException e) {
-            Log.e("MenuService", "An error has occured while parsing the received JSON");
+        if(response != null) {
+            try {
+                allMenuCategories = (ArrayList<Category>) gson.fromJson(response.get("categories").toString(), listType);
+            } catch (JSONException e) {
+                Log.e("MenuService", "An error has occured while parsing the received JSON");
+            }
         }
 
         publishCategories(allMenuCategories);

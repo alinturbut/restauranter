@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,22 +24,24 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.alinturbut.restauranter.R;
+import com.alinturbut.restauranter.model.Order;
 import com.alinturbut.restauranter.service.RestaurantFactsService;
-import com.alinturbut.restauranter.service.SharedPreferencesService;
 import com.alinturbut.restauranter.view.fragment.MenuCategoryFragment;
 import com.alinturbut.restauranter.view.fragment.MenuItemFragment;
+import com.alinturbut.restauranter.view.fragment.OrderFragment;
 import com.alinturbut.restauranter.view.fragment.OrderListFragment;
 import com.alinturbut.restauranter.view.fragment.SettingsFragment;
+import com.alinturbut.restauranter.view.fragment.TableOverviewFragment;
 
-public class DashboardActivity extends ActionBarActivity implements OrderListFragment.OnFragmentInteractionListener,
-        MenuCategoryFragment.OnFragmentInteractionListener, MenuItemFragment.OnFragmentInteractionListener{
+public class DashboardActivity extends ActionBarActivity implements MenuCategoryFragment.OnFragmentInteractionListener,
+        MenuItemFragment.OnFragmentInteractionListener{
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private ListView leftDrawerList;
     private ArrayAdapter<String> navigationDrawerAdapter;
-    private String[] leftSliderData = {"Orders", "Menu", "Tables", "Offers", "Restaurant facts", "Settings", "Sign out"};
+    private String[] leftSliderData = {"Orders", "Menu", "Tables", "Offers", "Restaurant facts", "Settings"};
     private CharSequence mTitle;
 
     @Override
@@ -57,6 +60,7 @@ public class DashboardActivity extends ActionBarActivity implements OrderListFra
         mTitle = getResources().getString(R.string.app_name);
         leftDrawerList = (ListView) findViewById(R.id.left_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.getMenu().clear();
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         navigationDrawerAdapter=new ArrayAdapter<String>( DashboardActivity.this, android.R.layout.simple_list_item_1, leftSliderData);
         leftDrawerList.setAdapter(navigationDrawerAdapter);
@@ -71,6 +75,7 @@ public class DashboardActivity extends ActionBarActivity implements OrderListFra
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 getSupportActionBar().setTitle(mTitle);
+                getSupportActionBar().setSubtitle("");
                 invalidateOptionsMenu();
             }
 
@@ -78,6 +83,7 @@ public class DashboardActivity extends ActionBarActivity implements OrderListFra
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getSupportActionBar().setTitle(mTitle);
+                getSupportActionBar().setSubtitle("");
                 invalidateOptionsMenu();
             }
 
@@ -88,7 +94,6 @@ public class DashboardActivity extends ActionBarActivity implements OrderListFra
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         boolean drawerOpen = drawerLayout.isDrawerOpen(Gravity.LEFT);
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -113,9 +118,6 @@ public class DashboardActivity extends ActionBarActivity implements OrderListFra
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -145,25 +147,25 @@ public class DashboardActivity extends ActionBarActivity implements OrderListFra
             FragmentManager fragmentManager = getFragmentManager();
             switch(position) {
                 case 0:
-                    fragment = new OrderListFragment();
+                    fragment = OrderListFragment.newInstance(getApplicationContext());
                     mTitle = getResources().getString(R.string.title_order_fragment);
                     break;
                 case 1:
                     fragment = new MenuCategoryFragment();
                     mTitle = getResources().getString(R.string.title_menu_fragment);
                     break;
+                case 2:
+                    fragment = TableOverviewFragment.newInstance(TableOverviewFragment.CONTEXT_FOR_SHOW);
+                    mTitle = getResources().getString(R.string.title_tables);
+                    break;
                 case 4:
-                    Intent intent = new Intent(getApplicationContext(), RestaurantFactListActivity.class);
-                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(), "Under maintainance", Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(getApplicationContext(), RestaurantFactListActivity.class);
+//                    startActivity(intent);
                     break;
                 case 5:
-                    fragment = SettingsFragment.newInstance();
+                    fragment = SettingsFragment.newInstance(getApplicationContext());
                     mTitle = getResources().getText(R.string.title_settings);
-                    break;
-                case 6:
-                    SharedPreferencesService.removeLoggedWaiterSession(getApplicationContext());
-                    Toast.makeText(getApplicationContext(), "You logged out!", Toast.LENGTH_SHORT);
-                    onSignOut();
                     break;
                 default:
             }
@@ -185,33 +187,56 @@ public class DashboardActivity extends ActionBarActivity implements OrderListFra
         }
     }
 
-    private void onSignOut() {
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-
     @Override
     public void onResume() {
         super.onResume();
         this.registerReceiver(startMenuItemFragment, new IntentFilter(MenuItemFragment.START_MENUITEM_FRAGMENT));
+        this.registerReceiver(startOrderFragment, new IntentFilter(OrderFragment.START_ORDER));
+        this.registerReceiver(startTableFragment, new IntentFilter(TableOverviewFragment.START_TABLE_FRAGMENT));
     }
 
     @Override
     public void onPause() {
         super.onPause();
         this.unregisterReceiver(startMenuItemFragment);
+        this.unregisterReceiver(startOrderFragment);
+        this.unregisterReceiver(startTableFragment);
     }
 
     private BroadcastReceiver startMenuItemFragment = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String categoryId = intent.getStringExtra("Category");
-            int imageId = intent.getIntExtra("ImageId",0);
-            Fragment fragment = MenuItemFragment.newInstance(categoryId,imageId);
+            int imageId = intent.getIntExtra("ImageId", 0);
+            if(imageId == 0 || categoryId == null) {
+                Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+                Log.e("DashboardActivity", "Invalid intent parameters!");
+            } else {
+                Fragment fragment = MenuItemFragment.newInstance(categoryId, imageId);
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.menu_category_layout, fragment).addToBackStack(null).commit();
+            }
+        }
+    };
+
+    private BroadcastReceiver startOrderFragment = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Order currentOrder = (Order) intent.getExtras().get("currentOrder");
+            Fragment fragment = OrderFragment.newInstance(currentOrder);
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.menu_category_layout, fragment).addToBackStack(null).commit();
+            fragmentManager.beginTransaction().replace(R.id.order_list_layout, fragment).addToBackStack(null)
+                    .commit();
+        }
+    };
+
+    private BroadcastReceiver startTableFragment = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String tableContext = intent.getExtras().getString("Context");
+            Fragment fragment = TableOverviewFragment.newInstance(tableContext);
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.order_item_layout, fragment).addToBackStack(null).commit();
         }
     };
 }

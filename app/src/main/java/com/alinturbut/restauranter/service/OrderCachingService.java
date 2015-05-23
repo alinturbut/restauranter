@@ -43,4 +43,6 @@ public class OrderCachingService {
     public Order getActiveOrder() {
         return this.activeOrder;
     }
+
+    public void setTableId(String tableId) { activeOrder.setTableId(tableId); }
 }

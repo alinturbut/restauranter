@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/search_routes_layout"
+            android:id="@+id/setting_server_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -47,6 +47,46 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/setting_signOut_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/menuItemColor"
+            android:orientation="vertical"
+            android:paddingBottom="15dp"
+
+            android:layout_marginTop="100dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@color/primaryColorDark"
+                android:paddingBottom="2dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="2dp"
+                android:text="@string/SignOut_settings"
+                android:gravity="center"
+                android:textColor="@color/menuItemColor" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="100dp"
+                android:layout_height="36dp"
+                android:text="Sign out"
+                android:textColor="@color/menuItemColor"
+                android:id="@+id/sign_out_button"
+                android:background="@color/primaryColorDark"
+                android:layout_below="@+id/setting_signOut_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/settings_save_button"
             android:layout_width="match_parent"
@@ -57,7 +97,9 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
             android:clickable="true"
+            android:textColor="@color/menuItemColor"
             android:background="@color/primaryColorDark"
             android:text="Save" />
+
     </RelativeLayout>
 </LinearLayout>

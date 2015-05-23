@@ -2,21 +2,27 @@ package com.alinturbut.restauranter.view.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.alinturbut.restauranter.R;
 import com.alinturbut.restauranter.helper.ApiUrls;
 import com.alinturbut.restauranter.service.SharedPreferencesService;
+import com.alinturbut.restauranter.view.activity.LoginActivity;
 
 public class SettingsFragment extends Fragment {
+    protected Context applicationContext;
 
-    public static SettingsFragment newInstance() {
+    public static SettingsFragment newInstance(Context ctx) {
         SettingsFragment fragment = new SettingsFragment();
+        fragment.applicationContext = ctx;
 
         return fragment;
     }
@@ -42,10 +48,27 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 boolean useLocalhost = localhostUseSwitch.isChecked();
                 ApiUrls.setUseLocalhost(useLocalhost);
+                SharedPreferencesService.saveLocalhostUse(getActivity().getApplicationContext(), useLocalhost);
+                Toast.makeText(getActivity().getApplicationContext(), "Settings saved!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        Button signOutButton = (Button) view.findViewById(R.id.sign_out_button);
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferencesService.removeLoggedWaiterSession(applicationContext);
+                Toast.makeText(applicationContext, "You signed out!", Toast.LENGTH_SHORT).show();
+                onSignOut();
             }
         });
 
         return view;
+    }
+
+    private void onSignOut() {
+        Intent intent = new Intent(applicationContext, LoginActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 
     @Override

@@ -14,6 +14,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -24,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alinturbut.restauranter.R;
@@ -52,6 +55,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private Activity mActivity;
+    private Button mEmailSignInButton;
+    private ImageView mRestauranterLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +80,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +90,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        mActivity = this;
+        mRestauranterLogo = (ImageView) findViewById(R.id.restauranter_logo);
     }
 
     private void attemptSessionLogin() {
@@ -279,8 +287,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
 
             if (success) {
+                String transitionName = getString(R.string.transition_card_view);
                 Intent startDashboard = new Intent(getApplicationContext(), DashboardActivity.class);
-                startActivity(startDashboard);
+                ActivityOptionsCompat options =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(mActivity,
+                                mRestauranterLogo,   // The view which starts the transition
+                                transitionName    // The transitionName of the view we are transitioning to
+                        );
+                ActivityCompat.startActivity(mActivity, startDashboard, options.toBundle());
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

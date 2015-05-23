@@ -64,6 +64,10 @@
                 android:value=".view.activity.RestaurantFactListActivity" />
         </activity>
 
+        <service
+            android:name=".service.TableService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

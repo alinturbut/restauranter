@@ -21,15 +21,36 @@
             android:layout_height="match_parent"
             android:background="@color/loginBackground">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@color/primaryColorDark"
+                android:paddingBottom="2dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="2dp"
+                android:text="Current order"
+                android:gravity="center"
+                android:id="@+id/table_number_text"
+                android:textColor="@color/menuItemColor" />
+
             <ImageView
                 android:id="@+id/order_item_image"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
+                android:src="@drawable/order_icon"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
                 android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/order_item_text"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"/>
+                android:layout_height="40dp"
+                android:layout_marginTop="50dp"
+                android:text="Items count:"
+                android:textColor="@color/cardView_text"
+                android:layout_toEndOf="@+id/order_item_image"/>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

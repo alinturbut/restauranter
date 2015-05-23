@@ -9,11 +9,13 @@ public class Offer implements Serializable {
     private String id;
     private String orderId;
     private int discount;
+    private String tableId;
 
-    public Offer(String id, String orderId, int discount) {
+    public Offer(String id, String orderId, int discount, String tableId) {
         this.id = id;
         this.orderId = orderId;
         this.discount = discount;
+        this.setTableId(tableId);
     }
 
     public String getId() {
@@ -38,5 +40,13 @@ public class Offer implements Serializable {
 
     public void setDiscount(int discount) {
         this.discount = discount;
+    }
+
+    public String getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(String tableId) {
+        this.tableId = tableId;
     }
 }

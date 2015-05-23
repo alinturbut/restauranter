@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primaryColor">#ff969890</color>
-    <color name="primaryColorDark">#0D47A1</color>
+    <color name="primaryColorDark">#ff406ca1</color>
     <color name="loginBackground">#ffffffff</color>
-    <color name="generalBackground">#ffafafaf</color>
+    <color name="generalBackground">#ffdadada</color>
     <color name="menuItemColor">#ffffffff</color>
+    <color name="cardView_text">#000</color>
 </resources>

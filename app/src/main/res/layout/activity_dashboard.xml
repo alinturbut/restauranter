@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
+    android:transitionName="@string/transition_card_view"
+    android:id="@+id/dashboard_layout"
     tools:context=".DashboardActivity">
 
     <include layout="@layout/toolbar" />
@@ -31,7 +33,7 @@
         <RelativeLayout
             android:layout_gravity="left|start"
             android:layout_width="match_parent"
-            android:background="#fff"
+            android:background="@color/loginBackground"
             android:layout_height="match_parent">
 
             <ListView
@@ -39,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="#eee"
-                android:background="#fff"
+                android:background="@color/loginBackground"
                 android:dividerHeight="1dp" />
         </RelativeLayout>
 
