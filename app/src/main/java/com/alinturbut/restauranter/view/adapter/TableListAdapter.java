@@ -1,6 +1,7 @@
 package com.alinturbut.restauranter.view.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.alinturbut.restauranter.model.Table;
 import com.alinturbut.restauranter.model.Waiter;
 import com.alinturbut.restauranter.service.OrderCachingService;
 import com.alinturbut.restauranter.service.SharedPreferencesService;
+import com.alinturbut.restauranter.service.TableService;
 import com.alinturbut.restauranter.view.fragment.TableOverviewFragment;
 
 import java.util.List;
@@ -72,6 +74,11 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.Tabl
                 Waiter waiter = SharedPreferencesService.getLoggedWaiter(mContext);
                 OrderCachingService orderService = OrderCachingService.getInstance(waiter.getId());
                 orderService.setTableId(table.get_id());
+                Intent intent = new Intent(mContext.getApplicationContext(), TableService.class);
+                intent.putExtra("Action", TableService.INTENT_MARK_TABLE_OCCUPIED);
+                intent.putExtra("Id", table.get_id());
+                intent.putExtra("isOccupied", true);
+                mContext.startService(intent);
                 Toast.makeText(mContext, "Table number " + table.getTableNumber() + " chosen for order!", Toast
                         .LENGTH_LONG).show();
                 mTableOverview.goBack();

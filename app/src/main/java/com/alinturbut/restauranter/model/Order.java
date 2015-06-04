@@ -1,5 +1,7 @@
 package com.alinturbut.restauranter.model;
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +16,19 @@ public class Order implements Serializable {
     private int price;
     private String waiterId;
     private String tableId;
+    private boolean active;
+    private DateTime sentTime;
 
-    public Order(String id, List<Drink> drinks, List<Food> foods, String waiterId, String tableId) {
+    public Order(String id, List<Drink> drinks, List<Food> foods, String waiterId, String tableId, boolean active,
+                 DateTime sentTime) {
         this.id = id;
         this.drinks = drinks;
         this.foods = foods;
         this.price = calculatePrice();
         this.waiterId = waiterId;
         this.tableId = tableId;
+        this.setActive(active);
+        this.setSentTime(sentTime);
     }
 
     public Order() {}
@@ -101,5 +108,21 @@ public class Order implements Serializable {
 
     public void setTableId(String tableId) {
         this.tableId = tableId;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public DateTime getSentTime() {
+        return sentTime;
+    }
+
+    public void setSentTime(DateTime sentTime) {
+        this.sentTime = sentTime;
     }
 }

@@ -62,7 +62,8 @@ public class DashboardActivity extends ActionBarActivity implements MenuCategory
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.getMenu().clear();
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        navigationDrawerAdapter=new ArrayAdapter<String>( DashboardActivity.this, android.R.layout.simple_list_item_1, leftSliderData);
+        navigationDrawerAdapter=new ArrayAdapter<String>( DashboardActivity.this, android.R.layout
+                .simple_list_item_1, leftSliderData);
         leftDrawerList.setAdapter(navigationDrawerAdapter);
         leftDrawerList.setOnItemClickListener(new DrawerItemClickListener());
     }
