@@ -116,7 +116,7 @@ public class MenuService extends IntentService {
 
         JSONObject response = networkRestCaller.executeCall();
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<Food>>(){}.getType();
+        Type listType = new TypeToken<List<Drink>>(){}.getType();
         try {
             allDrinkCategories = (ArrayList<Drink>) gson.fromJson(response.get("drinks").toString(), listType);
         } catch (JSONException e) {

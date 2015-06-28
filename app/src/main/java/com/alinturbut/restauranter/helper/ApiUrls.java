@@ -8,7 +8,7 @@ public class ApiUrls {
     public static int REMOTE_PORT = 8080;
     public static int API_PORT = REMOTE_PORT;
     public static String API_DOMAIN = "localhost";
-    public static String LOCALHOST_IP = "192.168.1.103:8089";
+    public static String LOCALHOST_IP = "192.168.1.101:8089";
     public static String RESTAURANTER_API = "api-restauranter.rhcloud.com";
     public static String SERVER_IP = RESTAURANTER_API;
     public static String HTTP = "http://";
@@ -19,9 +19,11 @@ public class ApiUrls {
     public static String TABLE_ADDRESS = "table";
     public static String ORDER_ADDRESS = "order";
     public static String MAKE_ORDER = "makeOrder";
+    public static String ASK_RECEIPT = "askReceipt";
     public static String FIND_BY_CATEGORY_ID = "findByCategoryId";
     public static String FIND_BY_ID = "findById";
     public static String MARK_OCCUPIED = "markOccupied";
+    public static String FIND_ACTIVE_ORDERS = "findActive";
     public static String ALL = "all";
     public static String URL_SLASH = "/";
     public static String URL_DOTS = ":";

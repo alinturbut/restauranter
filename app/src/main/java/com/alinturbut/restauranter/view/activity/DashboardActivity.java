@@ -54,6 +54,7 @@ public class DashboardActivity extends ActionBarActivity implements MenuCategory
         }
         initDrawer();
         initDatabase();
+        initGetGcmTokenService();
     }
 
     private void initView() {
@@ -66,6 +67,11 @@ public class DashboardActivity extends ActionBarActivity implements MenuCategory
                 .simple_list_item_1, leftSliderData);
         leftDrawerList.setAdapter(navigationDrawerAdapter);
         leftDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+    }
+
+    private void initGetGcmTokenService() {
+//        Intent intent = new Intent(GcmTokenService.TOKEN_PUBLISH_INTENT);
+//        startService(intent);
     }
 
     private void initDrawer() {
@@ -240,4 +246,15 @@ public class DashboardActivity extends ActionBarActivity implements MenuCategory
             fragmentManager.beginTransaction().replace(R.id.order_item_layout, fragment).addToBackStack(null).commit();
         }
     };
+//
+//    private BroadcastReceiver getGcmTokenReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            Bundle bundle = intent.getExtras();
+//            if(bundle != null) {
+////                String token = bundle.getString(GcmTokenService.TOKEN_PARAM);
+//                //TODO: implement here call to server for mapping token with waiter
+//            }
+//        }
+//    };
 }

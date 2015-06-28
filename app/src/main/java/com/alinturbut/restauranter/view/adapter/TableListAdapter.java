@@ -18,6 +18,7 @@ import com.alinturbut.restauranter.model.Waiter;
 import com.alinturbut.restauranter.service.OrderCachingService;
 import com.alinturbut.restauranter.service.SharedPreferencesService;
 import com.alinturbut.restauranter.service.TableService;
+import com.alinturbut.restauranter.view.fragment.OrderFragment;
 import com.alinturbut.restauranter.view.fragment.TableOverviewFragment;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.Tabl
     @Override
     public void onBindViewHolder(TableViewHolder holder, int position) {
         Table table = tableList.get(position);
-        holder.tableNumber.setText(holder.tableNumber.getText() + String.valueOf(table.getTableNumber()));
+        holder.tableNumber.setText(holder.tableNumber.getText() + " " + String.valueOf(table.getTableNumber()));
         if(table.isOccupied() && res != null) {
             holder.tableImage.setImageDrawable(res.getDrawable(R.drawable.occupied_table));
             holder.occupied.setText(holder.occupied.getText() + "Yes");
@@ -81,7 +82,11 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.Tabl
                 mContext.startService(intent);
                 Toast.makeText(mContext, "Table number " + table.getTableNumber() + " chosen for order!", Toast
                         .LENGTH_LONG).show();
-                mTableOverview.goBack();
+                String loggedWaiterId = SharedPreferencesService.getLoggedWaiter(mContext).getId();
+                Intent startOrderIntent = new Intent(OrderFragment.START_ORDER);
+                startOrderIntent.putExtra("currentOrder", OrderCachingService.getInstance(loggedWaiterId).getActiveOrder());
+
+                mContext.sendBroadcast(startOrderIntent);
             }
         };
 

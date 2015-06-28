@@ -3,6 +3,7 @@ package com.alinturbut.restauranter.service;
 import com.alinturbut.restauranter.model.Drink;
 import com.alinturbut.restauranter.model.Food;
 import com.alinturbut.restauranter.model.Order;
+import com.alinturbut.restauranter.model.OrderType;
 
 /**
  * @author alinturbut.
@@ -13,6 +14,7 @@ public class OrderCachingService {
 
     public OrderCachingService(String waiterId) {
         activeOrder = new Order();
+        activeOrder.setOrderType(OrderType.CURRENT);
         activeOrder.setWaiterId(waiterId);
     }
 
@@ -45,4 +47,10 @@ public class OrderCachingService {
     }
 
     public void setTableId(String tableId) { activeOrder.setTableId(tableId); }
+
+    public void setOrderType(OrderType orderType) {activeOrder.setOrderType(orderType);}
+
+    public void clearOrder() {
+        activeOrder = new Order();
+    }
 }

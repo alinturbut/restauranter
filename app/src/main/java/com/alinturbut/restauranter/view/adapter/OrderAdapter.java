@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.alinturbut.restauranter.R;
 import com.alinturbut.restauranter.model.Order;
+import com.alinturbut.restauranter.model.OrderType;
 import com.alinturbut.restauranter.view.fragment.OrderFragment;
 
 import java.util.List;
@@ -37,6 +38,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     @Override
     public void onBindViewHolder(OrderViewHolder holder, int position) {
         final Order order = orderList.get(position);
+        OrderType orderType = order.getOrderType();
+        holder.orderType.setText(orderType != null ? orderType.getKey() + " order" : "Active order");
         holder.itemCount.setText(holder.itemCount.getText() + " " + String.valueOf(order.getDrinks().size() + order
                 .getFoods().size()));
         holder.layout.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +59,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     }
 
     public class OrderViewHolder extends RecyclerView.ViewHolder {
+        private TextView orderType;
         private TextView itemCount;
         private CardView layout;
 
@@ -63,6 +67,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             super(itemView);
             itemCount = (TextView) itemView.findViewById(R.id.order_item_text);
             layout = (CardView) itemView.findViewById(R.id.card_view_order_item);
+            orderType = (TextView) itemView.findViewById(R.id.order_type_text);
         }
     }
 }

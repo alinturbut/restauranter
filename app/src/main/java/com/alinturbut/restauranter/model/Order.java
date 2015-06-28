@@ -10,35 +10,36 @@ import java.util.List;
  * @author alinturbut.
  */
 public class Order implements Serializable {
-    private String id;
+    private String _id;
     private List<Drink> drinks = new ArrayList<>();
     private List<Food> foods = new ArrayList<>();
     private int price;
     private String waiterId;
     private String tableId;
-    private boolean active;
-    private DateTime sentTime;
+    private OrderType orderType;
+    private transient DateTime sentTime;
 
-    public Order(String id, List<Drink> drinks, List<Food> foods, String waiterId, String tableId, boolean active,
+    public Order(String id, List<Drink> drinks, List<Food> foods, String waiterId, String tableId, OrderType orderType,
                  DateTime sentTime) {
-        this.id = id;
+        this._id = id;
         this.drinks = drinks;
         this.foods = foods;
         this.price = calculatePrice();
         this.waiterId = waiterId;
         this.tableId = tableId;
-        this.setActive(active);
+        this.orderType = orderType;
         this.setSentTime(sentTime);
     }
 
     public Order() {}
 
-    public String getId() {
-        return id;
+    public String getId()
+    {
+        return _id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this._id = id;
     }
 
     public List<Drink> getDrinks() {
@@ -110,12 +111,12 @@ public class Order implements Serializable {
         this.tableId = tableId;
     }
 
-    public boolean isActive() {
-        return active;
+    public OrderType getOrderType() {
+        return this.orderType;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
     }
 
     public DateTime getSentTime() {

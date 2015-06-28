@@ -32,7 +32,7 @@
                 android:paddingTop="2dp"
                 android:text="Current order"
                 android:gravity="center"
-                android:id="@+id/table_number_text"
+                android:id="@+id/order_type_text"
                 android:textColor="@color/menuItemColor" />
 
             <ImageView

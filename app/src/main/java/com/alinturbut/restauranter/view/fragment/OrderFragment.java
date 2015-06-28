@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,25 +17,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alinturbut.restauranter.R;
-import com.alinturbut.restauranter.helper.ApiUrls;
-import com.alinturbut.restauranter.helper.RESTCaller;
 import com.alinturbut.restauranter.helper.StringConstants;
 import com.alinturbut.restauranter.model.Drink;
 import com.alinturbut.restauranter.model.Food;
-import com.alinturbut.restauranter.model.HttpRequestMethod;
 import com.alinturbut.restauranter.model.Order;
 import com.alinturbut.restauranter.model.Table;
-import com.alinturbut.restauranter.model.Waiter;
-import com.alinturbut.restauranter.service.OrderCachingService;
-import com.alinturbut.restauranter.service.SharedPreferencesService;
+import com.alinturbut.restauranter.service.OrderService;
 import com.alinturbut.restauranter.service.TableService;
-import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +41,7 @@ public class OrderFragment extends Fragment {
     private ImageView mTableImage;
     private TextView mTableCardPrice;
     private TextView mTableCardOccupied;
+    private TextView mTableNumber;
     private LinearLayout mChooseTableLayout;
     private Button mSendOrderButton;
     private Button mAskReceiptButton;
@@ -84,6 +75,7 @@ public class OrderFragment extends Fragment {
         mChooseTableLayout = (LinearLayout) view.findViewById(R.id.choose_table_layout);
         mSendOrderButton = (Button) view.findViewById(R.id.send_order_button);
         mAskReceiptButton = (Button) view.findViewById(R.id.receipt_button);
+        mTableNumber = (TextView) view.findViewById(R.id.table_number_text);
 
         initTableSection();
         mShowTablesButton = (Button) view.findViewById(R.id.choose_table_button);
@@ -105,10 +97,10 @@ public class OrderFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), TableService.class);
-                intent.putExtra("Action", TableService.INTENT_MARK_TABLE_OCCUPIED);
-                intent.putExtra("Id", currentOrder.getTableId());
-                intent.putExtra("isOccupied", false);
+                Intent intent = new Intent(getActivity(), OrderService.class);
+                intent.setAction(OrderService.ACTION_ASK_RECEIPT);
+                intent.putExtra("orderId", currentOrder.getId());
+                intent.putExtra("tableId", currentOrder.getTableId());
                 getActivity().startService(intent);
             }
         };
@@ -173,36 +165,11 @@ public class OrderFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RESTCaller caller = new RESTCaller();
-                caller.setHttpRequestMethod(HttpRequestMethod.POST);
-                caller.setUrl(ApiUrls.HTTP + ApiUrls.SERVER_IP + ApiUrls.URL_SLASH + ApiUrls.ORDER_ADDRESS + ApiUrls
-                        .URL_SLASH + ApiUrls.MAKE_ORDER);
-                Waiter loggedWaiter = SharedPreferencesService.getLoggedWaiter(getActivity().getApplicationContext());
-                Order orderToSend = OrderCachingService.getInstance(loggedWaiter.getId()).getActiveOrder();
-                Gson gson = new Gson();
-                caller.addParam("drinks", gson.toJson(orderToSend.getDrinks()));
-                caller.addParam("foods", gson.toJson(orderToSend.getFoods()));
-                caller.addParam("tableId", gson.toJson(orderToSend.getTableId()));
-                caller.addParam("price", gson.toJson(orderToSend.getPrice()));
-                caller.addParam("waiterId", gson.toJson(orderToSend.getWaiterId()));
-                caller.addParam("active", gson.toJson(orderToSend.isActive()));
-                caller.addParam("sentTime", gson.toJson(orderToSend.getSentTime()));
-                JSONObject jsonResponse = caller.executeCall();
-                try {
-                    int responseCode = jsonResponse.getInt("responseCode");
-                    if(responseCode == HttpURLConnection.HTTP_OK) {
-                        Toast.makeText(getActivity().getApplicationContext(), "Order sent!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getActivity().getApplicationContext(), "Something went wrong, order not sent!",
-                                Toast.LENGTH_SHORT).show();
-                        Log.e("OrderFragment", "Response code from make order POST call is: " + responseCode);
-                    }
-                } catch (JSONException e) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Something went wrong, order not sent!",
-                            Toast.LENGTH_SHORT).show();
-                    Log.e("OrderFragment", e.getMessage());
-                }
-
+                Intent intent = new Intent(getActivity(), OrderService.class);
+                intent.setAction(OrderService.ACTION_SEND_ORDER);
+                intent.putExtra("Order", currentOrder);
+                getActivity().startService(intent);
+                Toast.makeText(getActivity().getApplicationContext(), "Order sent!", Toast.LENGTH_SHORT).show();
             }
         };
     }
@@ -226,12 +193,15 @@ public class OrderFragment extends Fragment {
             if(table != null && table.isOccupied()) {
                 mTableImage.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.occupied_table));
                 mTableCardOccupied.setText(mTableCardOccupied.getText() + " " + "Yes");
-            } else {
+                mTableNumber.setText(mTableNumber.getText() + " " + String.valueOf(table.getTableNumber()));
+            } else if (table != null) {
                 mTableImage.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.empty_table_1));
                 mTableCardOccupied.setText(mTableCardOccupied.getText() + " " + "No");
+                mTableNumber.setText(mTableNumber.getText() + " " + String.valueOf(table.getTableNumber()));
             }
             mTableCardLayout.setVisibility(View.VISIBLE);
             mTableImage.setVisibility(View.VISIBLE);
+
         }
     };
 

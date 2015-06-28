@@ -19,6 +19,9 @@
     <string name="title_restaurantfact_list">RestaurantFacts</string>
     <string name="title_restaurantfact_detail">RestaurantFact Detail</string>
     <string name="transition_card_view">CardViewTransition</string>
+    <string name="gcm_restauranter_id">restauranter-application</string>
+    <string name="gcm_restauranter_server_key">AIzaSyBVoXwJD2UZmf8Yq23SJi4utqdLnrjOC7U</string>
+    <string name="gcm_sender_id">60735188859</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
